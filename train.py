@@ -113,6 +113,7 @@ def init_logs():
     # Log stdout messages to file
     sys.stdout = G.misc.logger.Logger(logpath+"log.txt")
     # Clone local source to logdir
+    # Note: since this copies the source dir, don't choose log dir inside source dir
     os.system("rsync -au --include '*/' --include '*.py' --exclude '*' . "+logpath+"source")
     with open(logpath+"source/run.sh", 'w') as f:
         f.write("python "+" ".join(sys.argv)+"\n")

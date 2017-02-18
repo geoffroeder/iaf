@@ -324,7 +324,6 @@ def cvae_layer(name, prior, posterior, n_h1, n_h2, n_z, depth_ar, downsample, nl
         
         output = input + .1 * down_conv2(down_nl2(h, w), w)
         
-        
         return output, logqs - logps
     
     def down_p(input, eps, w):
