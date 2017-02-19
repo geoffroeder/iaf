@@ -274,7 +274,8 @@ def cvae_layer(name, prior, posterior, n_h1, n_h2, n_z, depth_ar, downsample, nl
             rz_logsd = h[:,n_conv_down_prior+n_z:n_conv_down_prior+2*n_z,:,:]
             _qz = N.rand.gaussian_diag(qz[0].mean + rz_mean, qz[0].logvar + 2*rz_logsd)
             z = _qz.sample
-            logqs = _qz.logps
+#            logqs = _qz.logps # specifically we block the gradient here 
+            logqs = _qz.logps_pd
             # ARW transform
             down_context = h[:,n_conv_down_prior+2*n_z:n_conv_down_prior+2*n_z+n_h2,:,:]
             context = up_context[0] + down_context

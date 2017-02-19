@@ -1,5 +1,6 @@
 import theano
 import theano.tensor as T
+from theano.tensor import gradient_disconnected as block_grad
 import graphy as G
 import math
 import numpy as np
@@ -81,10 +82,11 @@ def gaussian_diag(mean, logvar, sample=None):
         eps = G.rng_curand.normal(size=mean.shape)
         sample = mean + T.exp(.5*logvar) * eps
     logps = -.5 * (T.log(2*math.pi) + logvar + (sample - mean)**2 / T.exp(logvar))
-    logp = logps.flatten(2).sum(axis=1)
+    # use block gradient here
+    logps_pd = logps.flatten(2).sum(axis=1)
     entr = (.5 * (T.log(2 * math.pi) + 1 + logvar)).flatten(2).sum(axis=1)
     kl = lambda p_mean, p_logvar: (.5 * (p_logvar - logvar) + (T.exp(logvar) + (mean-p_mean)**2)/(2*T.exp(p_logvar)) - .5).flatten(2).sum(axis=1)
-    return RandomVariable(sample, logp, entr, mean=mean, logvar=logvar, kl=kl, logps=logps, eps=eps)
+    return RandomVariable(sample, logp, logps_pd, entr, mean=mean, logvar=logvar, kl=kl, logps=logps, eps=eps)
 
 
 '''
