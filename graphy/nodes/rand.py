@@ -86,7 +86,7 @@ def gaussian_diag(mean, logvar, sample=None):
     logps_pd = logps.flatten(2).sum(axis=1)
     entr = (.5 * (T.log(2 * math.pi) + 1 + logvar)).flatten(2).sum(axis=1)
     kl = lambda p_mean, p_logvar: (.5 * (p_logvar - logvar) + (T.exp(logvar) + (mean-p_mean)**2)/(2*T.exp(p_logvar)) - .5).flatten(2).sum(axis=1)
-    return RandomVariable(sample, logp, logps_pd, entr, mean=mean, logvar=logvar, kl=kl, logps=logps, eps=eps)
+    return RandomVariable(sample, logps,  entr, logps_pd=logps_pd, mean=mean, logvar=logvar, kl=kl, logps=logps, eps=eps)
 
 
 '''
