@@ -1,6 +1,6 @@
 import theano
 import theano.tensor as T
-from theano.tensor import gradient_disconnected as block_grad
+from theano.gradient import disconnected_grad as block_grad
 import graphy as G
 import math
 import numpy as np
